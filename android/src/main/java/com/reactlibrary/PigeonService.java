@@ -11,7 +11,7 @@ import com.google.firebase.messaging.RemoteMessage;
 
 public abstract class PigeonService extends Service {
 
-    abstract void onMessageReceived(RemoteMessage remoteMessage);
+    public abstract void onMessageReceived(RemoteMessage remoteMessage);
 
     private Service underlyingService = new WrappedFirebaseMessagingService();
 
@@ -48,7 +48,7 @@ class EmptyMessagingService extends PigeonService {
     public static final String TAG = EmptyMessagingService.class.getSimpleName();
 
     @Override
-    void onMessageReceived(RemoteMessage remoteMessage) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "onMessageReceived");
     }
 }
