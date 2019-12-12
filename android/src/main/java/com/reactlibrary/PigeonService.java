@@ -8,6 +8,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.reactlibrary.config.PigeonApiProvider;
+import com.reactlibrary.model.Employee;
+import java.util.List;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public abstract class PigeonService extends Service {
 
@@ -40,6 +46,19 @@ class WrappedFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         Log.d(TAG, "onMessageReceived");
+
+        PigeonApiProvider.get().getEmployees()
+            .enqueue(new Callback<List<Employee>>() {
+                @Override
+                public void onResponse(Call<List<Employee>> employees, Response<List<Employee>> response) {
+                    Log.d(TAG, employees.toString());
+                }
+
+                @Override
+                public void onFailure(Call<List<Employee>> employees, Throwable t) {
+
+                }
+            });
     }
 }
 

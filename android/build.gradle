@@ -76,6 +76,11 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation 'com.facebook.react:react-native:+'  // From node_modules
 
+    def retrofitVersion = '2.6.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+
     compileOnly "com.google.firebase:firebase-core:17.2.1"
     compileOnly "com.google.firebase:firebase-messaging:20.0.1"
 }
