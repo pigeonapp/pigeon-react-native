@@ -2,7 +2,7 @@
   package="com.reactlibrary">
 
   <application>
-    <service android:name=".EmptyMessagingService">
+    <service android:name=".WrappedFirebaseMessagingService">
       <intent-filter android:priority="1">
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
