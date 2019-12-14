@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package io.pigeonapp;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;

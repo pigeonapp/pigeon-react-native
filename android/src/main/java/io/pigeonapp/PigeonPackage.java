@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package io.pigeonapp;
 
 import java.util.Arrays;
 import java.util.Collections;

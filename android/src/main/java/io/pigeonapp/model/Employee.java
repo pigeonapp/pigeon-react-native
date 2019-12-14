@@ -1,4 +1,4 @@
-package com.reactlibrary.model;
+package io.pigeonapp.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

@@ -1,4 +1,4 @@
-package com.reactlibrary;
+package io.pigeonapp;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-import com.reactlibrary.config.PigeonApiProvider;
-import com.reactlibrary.model.Employee;
+import io.pigeonapp.config.PigeonApiProvider;
+import io.pigeonapp.model.Employee;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
