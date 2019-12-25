@@ -2,7 +2,7 @@
   package="io.pigeonapp">
 
   <application>
-    <service android:name=".WrappedFirebaseMessagingService">
+    <service android:name=".PigeonMessagingService">
       <intent-filter android:priority="1">
         <action android:name="com.google.firebase.MESSAGING_EVENT" />
       </intent-filter>
