@@ -1,23 +1,24 @@
 {
-  "name": "react-native-pigeon",
-  "title": "React Native Pigeon",
+  "name": "pigeon-react-native",
+  "title": "Pigeon React Native",
   "version": "1.0.0",
-  "description": "TODO",
+  "description": "Pigeon SDK for React Native",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github_account/react-native-pigeon.git",
-    "baseUrl": "https://github.com/github_account/react-native-pigeon"
+    "url": "git+https://github.com/pigeonapp/pigeon-react-native",
+    "baseUrl": "https://github.com/pigeonapp/pigeon-react-native"
   },
   "keywords": [
-    "react-native"
+    "react-native",
+    "pigeon"
   ],
   "author": {
-    "name": "Your Name",
-    "email": "yourname@email.com"
+    "name": "Pigeonapp.io",
+    "email": "dev@pigeonapp.io"
   },
   "license": "MIT",
   "licenseFilename": "LICENSE",
