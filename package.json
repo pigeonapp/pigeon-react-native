@@ -1,6 +1,6 @@
 {
   "name": "react-native-pigeon",
-  "title": "Pigeon React Native",
+  "title": "react-native-pigeon",
   "version": "0.1.0",
   "description": "Pigeon SDK for React Native",
   "main": "index.js",
