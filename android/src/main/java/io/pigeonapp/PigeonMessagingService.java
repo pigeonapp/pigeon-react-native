@@ -23,6 +23,11 @@ public class PigeonMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        Log.d(TAG, "onMessageReceived: " + remoteMessage.getNotification().getTitle());
+        RemoteMessage.Notification notification = remoteMessage.getNotification();
+        if (notification == null) {
+            return;
+        }
+
+        Log.d(TAG, "onMessageReceived: " + notification.getTitle());
     }
 }
