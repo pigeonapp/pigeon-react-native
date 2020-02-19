@@ -67,7 +67,7 @@ public class PigeonClient {
     }
 
     private void saveContact() {
-        if (deviceToken == null || customerToken == null) {
+        if (deviceToken == null || customerToken == null || publicKey == null) {
             return;
         }
 
