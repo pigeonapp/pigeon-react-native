@@ -4,46 +4,46 @@ import android.util.Log;
 
 public class PigeonLog {
 		private static enum LogLevel {
-				INFO(0), DEBUG(1), OFF(-1);
+				INFO(1), DEBUG(0), OFF(-1);
 
-				private final int levelCode;
+				private final int code;
 
-				LogLevel(int levelCode) {
-						this.levelCode = levelCode;
+				LogLevel(int code) {
+						this.code = code;
 				}
 
-				public int getLevelCode() {
-				    return this.levelCode;
+				public int getCode() {
+				    return this.code;
 				}
 
-				public static LogLevel lookupLogLevel(int levelCode) {
+				public static LogLevel lookup(int code) {
 						switch (levelCode) {
-								case 0:
-										return LogLevel.INFO;
 								case 1:
+										return LogLevel.INFO;
+								case 0:
 										return LogLevel.DEBUG;
 								case -1:
 										return LogLevel.OFF;
 								default:
-										return LogLevel.INFO;
+										return LogLevel.OFF;
 						}
 				}
 		}
 
-		private static LogLevel logLevel = LogLevel.INFO;
+		private static LogLevel logLevel = LogLevel.OFF;
 
 		public static void setLogLevel(int logLevel) {
-				PigeonLog.logLevel = LogLevel.lookupLogLevel(logLevel);
+				PigeonLog.logLevel = LogLevel.lookup(logLevel);
 		}
 
 		public static void d(String tag, String logText) {
-				if (logLevel.getLevelCode() > 0) {
+				if (logLevel.getCode() >= LogLevel.DEBUG.getcode()) {
 						Log.d(tag, logText);
 				}
 		}
 
 		public static void i(String tag, String logText) {
-				if (logLevel.getLevelCode() == 0) {
+				if (logLevel.getCode() >= LogLevel.INFO.getcode()) {
 						Log.i(tag, logText);
 				}
 		}

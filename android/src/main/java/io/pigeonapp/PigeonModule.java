@@ -32,7 +32,7 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setLogLevel(int logLevel){
+    public void setLogLevel(int logLevel) {
         PigeonLog.setLogLevel(logLevel);
     }
 
