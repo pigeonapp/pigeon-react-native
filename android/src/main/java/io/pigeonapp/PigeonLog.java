@@ -17,7 +17,7 @@ public class PigeonLog {
 				}
 
 				public static LogLevel lookup(int code) {
-						switch (levelCode) {
+						switch (code) {
 								case 1:
 										return LogLevel.INFO;
 								case 0:
@@ -37,13 +37,13 @@ public class PigeonLog {
 		}
 
 		public static void d(String tag, String logText) {
-				if (logLevel.getCode() >= LogLevel.DEBUG.getcode()) {
+				if (logLevel.getCode() >= LogLevel.DEBUG.getCode()) {
 						Log.d(tag, logText);
 				}
 		}
 
 		public static void i(String tag, String logText) {
-				if (logLevel.getCode() >= LogLevel.INFO.getcode()) {
+				if (logLevel.getCode() >= LogLevel.INFO.getCode()) {
 						Log.i(tag, logText);
 				}
 		}
