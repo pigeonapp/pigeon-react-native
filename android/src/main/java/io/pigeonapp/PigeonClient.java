@@ -1,7 +1,6 @@
 package io.pigeonapp;
 
 import android.os.Build;
-import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -53,7 +52,7 @@ public class PigeonClient {
     public void setCustomerToken(String customerToken) {
         this.customerToken = customerToken;
 
-        Log.d(TAG, "setCustomerToken: " + customerToken);
+        PigeonLog.d(TAG, "setCustomerToken: " + customerToken);
 
         saveContact();
     }
@@ -61,7 +60,7 @@ public class PigeonClient {
     public void setDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
 
-        Log.d(TAG, "setDeviceToken: " + deviceToken);
+        PigeonLog.d(TAG, "setDeviceToken: " + deviceToken);
 
         saveContact();
     }
@@ -86,7 +85,7 @@ public class PigeonClient {
         httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                Log.d(TAG, "Could not save contact: " + deviceName + " " + deviceKind + " " + deviceToken);
+                PigeonLog.d(TAG, "Could not save contact: " + deviceName + " " + deviceKind + " " + deviceToken);
 
                 e.printStackTrace();
             }
@@ -94,17 +93,17 @@ public class PigeonClient {
             @Override
             public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                 if (!response.isSuccessful()) {
-                    Log.d(TAG, "Encountered an error during saveContact()");
+                    PigeonLog.d(TAG, "Encountered an error during saveContact()");
                     return;
                 }
 
                 GenericResponse genericResponse = gson.fromJson(response.body().string(), GenericResponse.class);
                 if (!genericResponse.success) {
-                    Log.d(TAG, "Encountered an error during saveContact()");
+                    PigeonLog.d(TAG, "Encountered an error during saveContact()");
                     return;
                 }
 
-                Log.d(TAG, "Saved contact: " + deviceName + " " + deviceKind + " " + deviceToken);
+                PigeonLog.d(TAG, "Saved contact: " + deviceName + " " + deviceKind + " " + deviceToken);
             }
         });
     }

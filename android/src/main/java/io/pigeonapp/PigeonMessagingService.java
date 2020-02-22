@@ -14,7 +14,7 @@ public class PigeonMessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String token) {
         super.onNewToken(token);
 
-        Log.d(TAG, "onNewToken: " + token);
+        PigeonLog.d(TAG, "onNewToken: " + token);
 
         PigeonClient.getInstance().setDeviceToken(token);
     }
@@ -28,6 +28,6 @@ public class PigeonMessagingService extends FirebaseMessagingService {
             return;
         }
 
-        Log.d(TAG, "onMessageReceived: " + notification.getTitle());
+        PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
     }
 }

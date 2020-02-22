@@ -18,9 +18,12 @@ public class PigeonModule extends ReactContextBaseJavaModule {
 
     private final ReactApplicationContext reactContext;
 
+    private final PigeonClient pigeonClient;
+
     public PigeonModule(ReactApplicationContext reactContext) {
         super(reactContext);
         this.reactContext = reactContext;
+        this.pigeonClient = PigeonClient.getInstance();
     }
 
     @Override
@@ -29,15 +32,19 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void setLogLevel(int logLevel){
+        PigeonLog.setLogLevel(logLevel);
+    }
+
+    @ReactMethod
     public void setup(ReadableMap config) {
         String publicKey = config.getString("publicKey");
-
-        PigeonClient.getInstance().setPublicKey(publicKey);
+        pigeonClient.setPublicKey(publicKey);
     }
 
     @ReactMethod
     public void setCustomerToken(String customerToken) {
-        PigeonClient.getInstance().setCustomerToken(customerToken);
+        pigeonClient.setCustomerToken(customerToken);
 
         if (customerToken != null) {
             FirebaseInstanceId.getInstance().getInstanceId()
