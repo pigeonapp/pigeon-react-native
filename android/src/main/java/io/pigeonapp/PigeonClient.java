@@ -96,7 +96,7 @@ public class PigeonClient {
                     return;
                 }
 
-                  PigeonLog.d(TAG, "Sent event: " + event + " " + customerUid);
+                PigeonLog.d(TAG, "Sent event: " + event + " " + customerUid);
             }
         });
     }
