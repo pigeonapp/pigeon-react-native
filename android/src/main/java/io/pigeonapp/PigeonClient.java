@@ -65,40 +65,40 @@ public class PigeonClient {
     }
 
     public void track(final String event, final String customerUid) {
-      TrackRequest trackRequest = new TrackRequest(event, customerUid);
-      RequestBody body = RequestBody.create(gson.toJson(trackRequest), JSON);
+        TrackRequest trackRequest = new TrackRequest(event, customerUid);
+        RequestBody body = RequestBody.create(gson.toJson(trackRequest), JSON);
 
-      Request request = new Request.Builder()
-              .url(baseURI + "/event_logs")
-              .addHeader("X-Customer-Token", customerToken)
-              .addHeader("X-Public-Key", publicKey)
-              .post(body)
-              .build();
+        Request request = new Request.Builder()
+                .url(baseURI + "/event_logs")
+                .addHeader("X-Customer-Token", customerToken)
+                .addHeader("X-Public-Key", publicKey)
+                .post(body)
+                .build();
 
-      httpClient.newCall(request).enqueue(new Callback() {
-        @Override
-        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-          PigeonLog.d(TAG, "Could not track: " + event + " " + customerUid);
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                PigeonLog.d(TAG, "Could not track: " + event + " " + customerUid);
 
-          e.printStackTrace();
-        }
+                e.printStackTrace();
+            }
 
-        @Override
-        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-          if (!response.isSuccessful()) {
-            PigeonLog.d(TAG, "Encountered an error during track():" + response.body().string());
-            return;
-          }
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    PigeonLog.d(TAG, "Encountered an error during track():" + response.body().string());
+                    return;
+                }
 
-          GenericResponse genericResponse = gson.fromJson(response.body().string(), GenericResponse.class);
-          if (!genericResponse.getSuccess()) {
-            PigeonLog.d(TAG, "Encountered an error during track():" + genericResponse.toString());
-            return;
-          }
+                GenericResponse genericResponse = gson.fromJson(response.body().string(), GenericResponse.class);
+                if (!genericResponse.getSuccess()) {
+                    PigeonLog.d(TAG, "Encountered an error during track():" + genericResponse.toString());
+                    return;
+                }
 
-          PigeonLog.d(TAG, "Sent event: " + event + " " + customerUid);
-        }
-      });
+                  PigeonLog.d(TAG, "Sent event: " + event + " " + customerUid);
+            }
+        });
     }
 
     private void saveContact() {
