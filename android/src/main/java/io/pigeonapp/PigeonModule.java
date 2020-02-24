@@ -43,7 +43,7 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void track(String event, String customerUid){
+    public void track(String event, String customerUid) {
         pigeonClient.track(event, customerUid);
     }
 
