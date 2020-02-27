@@ -10,12 +10,12 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import com.facebook.react.bridge.Callback;
 
 public class PigeonClient {
     private static String TAG = "PigeonClient";
@@ -26,6 +26,7 @@ public class PigeonClient {
     private String publicKey;
     private String customerToken;
     private String deviceToken;
+    private Callback onMessageReceivedCallback;
 
     private OkHttpClient httpClient = new OkHttpClient();
 
@@ -65,6 +66,14 @@ public class PigeonClient {
         saveContact();
     }
 
+    public void setOnMessageReceivedCallback(Callback callback) {
+        onMessageReceivedCallback = callback;
+    }
+
+    public Callback getOnMessageReceivedCallback() {
+        return onMessageReceivedCallback;
+    }
+
     private void saveContact() {
         if (deviceToken == null || customerToken == null || publicKey == null) {
             return;
@@ -82,7 +91,7 @@ public class PigeonClient {
                 .post(body)
                 .build();
 
-        httpClient.newCall(request).enqueue(new Callback() {
+        httpClient.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 PigeonLog.d(TAG, "Could not save contact: " + deviceName + " " + deviceKind + " " + deviceToken);

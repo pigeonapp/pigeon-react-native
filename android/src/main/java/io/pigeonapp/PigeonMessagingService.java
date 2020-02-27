@@ -1,9 +1,8 @@
 package io.pigeonapp;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
+import com.facebook.react.bridge.Callback;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -24,6 +23,13 @@ public class PigeonMessagingService extends FirebaseMessagingService {
         super.onMessageReceived(remoteMessage);
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
+
+        Callback onMessageReceivedCallback = PigeonClient.getInstance().getOnMessageReceivedCallback();
+
+        if(onMessageReceivedCallback != null && remoteMessage.getData().size() > 0){
+            onMessageReceivedCallback.invoke(remoteMessage.getData());
+        }
+
         if (notification == null) {
             return;
         }
