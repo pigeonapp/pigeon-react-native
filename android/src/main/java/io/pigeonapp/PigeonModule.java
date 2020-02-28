@@ -48,6 +48,11 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void track(String event, String customerUid, ReadableMap data) {
+        pigeonClient.track(event, customerUid, data);
+    }
+
+    @ReactMethod
     public void setCustomerToken(String customerToken) {
         pigeonClient.setCustomerToken(customerToken);
 
