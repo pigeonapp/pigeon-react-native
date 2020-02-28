@@ -1,6 +1,6 @@
 package io.pigeonapp
 
-import com.facebook.react.bridge.ReadableMap
+import com.google.gson.JsonObject
 
 data class SaveContactRequest(
     val kind: String,
@@ -9,9 +9,8 @@ data class SaveContactRequest(
 )
 
 data class TrackRequest(
-    val customerUid: String,
     val event: String,
-    val data: ReadableMap
+    val data: JsonObject
 )
 
 data class GenericResponse(

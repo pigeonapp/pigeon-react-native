@@ -6,6 +6,7 @@ import com.facebook.react.bridge.ReadableMap;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -74,8 +75,22 @@ public class PigeonClient {
         return onMessageReceivedCallback;
     }
 
-    public void track(final String event, final String customerUid, ReadableMap data) {
-        TrackRequest trackRequest = new TrackRequest(event, customerUid, data);
+    public void track(final String event, final ReadableMap data) {
+        if (customerToken == null) {
+            PigeonLog.d(TAG, "Customer token not set");
+            return;
+        }
+
+        TrackRequest trackRequest;
+
+        try {
+            trackRequest = new TrackRequest(event, DataUtils.convertMapToJson(data));
+        } catch (JSONException e) {
+            PigeonLog.d(TAG, "Encountered an error while parsing data");
+            e.printStackTrace();
+            return;
+        }
+
         RequestBody body = RequestBody.create(gson.toJson(trackRequest), JSON);
 
         Request request = new Request.Builder()
@@ -88,8 +103,7 @@ public class PigeonClient {
         httpClient.newCall(request).enqueue(new okhttp3.Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                PigeonLog.d(TAG, "Could not track: " + event + " " + customerUid);
-
+                PigeonLog.d(TAG, "Could not track: " + event + " " + data);
                 e.printStackTrace();
             }
 
@@ -106,7 +120,7 @@ public class PigeonClient {
                     return;
                 }
 
-                PigeonLog.d(TAG, "Sent event: " + event + " " + customerUid);
+                PigeonLog.d(TAG, "Sent event: " + event + " " + data);
             }
         });
     }
