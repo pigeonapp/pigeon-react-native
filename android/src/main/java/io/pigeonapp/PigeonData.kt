@@ -1,6 +1,6 @@
 package io.pigeonapp
 
-import org.json.JSONObject
+import com.google.gson.JsonObject
 
 data class SaveContactRequest(
     val kind: String,
@@ -10,7 +10,7 @@ data class SaveContactRequest(
 
 data class TrackRequest(
     val event: String,
-    val data: JSONObject
+    val data: JsonObject
 )
 
 data class GenericResponse(
