@@ -5,7 +5,6 @@ import android.util.Log;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReadableMap;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,6 +39,11 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     public void setup(ReadableMap config) {
         String publicKey = config.getString("publicKey");
         pigeonClient.setPublicKey(publicKey);
+    }
+
+    @ReactMethod
+    public void track(String event, ReadableMap data) {
+        pigeonClient.track(event, data);
     }
 
     @ReactMethod
