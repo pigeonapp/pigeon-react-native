@@ -5,7 +5,6 @@ import com.facebook.react.bridge.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.json.JSONException
-import java.lang.reflect.MalformedParametersException
 
 @Throws(JSONException::class)
 fun convertMapToJson(readableMap: ReadableMap?): JsonObject {
@@ -48,10 +47,10 @@ fun convertToWritableMap(map: Map<*, *>): WritableMap {
     while (iterator.hasNext()) {
         val key = iterator.next()
         when (val value = map[key]) {
-            Boolean -> writableMap.putBoolean(key, (value as Boolean?)!!)
-            Int -> writableMap.putInt(key, (value as Int?)!!)
-            Double -> writableMap.putDouble(key, (value as Double?)!!)
-            String -> writableMap.putString(key, value as String?)
+            is Boolean -> writableMap.putBoolean(key, (value as Boolean?)!!)
+            is Int -> writableMap.putInt(key, (value as Int?)!!)
+            is Double -> writableMap.putDouble(key, (value as Double?)!!)
+            is String -> writableMap.putString(key, value as String?)
             else -> writableMap.putString(key, value.toString())
         }
     }
