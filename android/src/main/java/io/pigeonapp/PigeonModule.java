@@ -52,7 +52,7 @@ public class PigeonModule extends ReactContextBaseJavaModule {
 
                     // Save new Instance ID token
                     String deviceToken = task.getResult().getToken();
-                    PigeonClient.getInstance().setDeviceToken(deviceToken);
+                    pigeonClient.setDeviceToken(deviceToken);
                 }
             });
     }
