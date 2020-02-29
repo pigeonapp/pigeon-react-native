@@ -1,4 +1,4 @@
-import { NativeEventEmitter, NativeModules  } from 'react-native';
+import { NativeEventEmitter, NativeModules } from 'react-native';
 
 const { Pigeon } = NativeModules;
 const PigeonEventEmitter = new NativeEventEmitter(Pigeon);
