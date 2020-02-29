@@ -33,7 +33,7 @@ public class PigeonMessagingService extends FirebaseMessagingService {
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
 
-        PigeonLog.d(TAG, "Data:"+remoteMessage.getData());
+        PigeonLog.d(TAG, "Data:" + remoteMessage.getData());
 
         WritableMap eventProperties = Arguments.createMap();
 
