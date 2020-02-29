@@ -1,12 +1,11 @@
 @file:JvmName("DataUtils")
 package io.pigeonapp
 
-import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.ReadableType
+import com.facebook.react.bridge.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.json.JSONException
+import java.lang.reflect.MalformedParametersException
 
 @Throws(JSONException::class)
 fun convertMapToJson(readableMap: ReadableMap?): JsonObject {

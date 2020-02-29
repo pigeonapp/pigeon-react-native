@@ -2,15 +2,9 @@ package io.pigeonapp;
 
 import androidx.annotation.NonNull;
 
-import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.WritableMap;
-import com.facebook.react.bridge.WritableNativeMap;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
-
-import java.lang.reflect.MalformedParametersException;
-import java.util.Iterator;
-import java.util.Map;
 
 
 public class PigeonMessagingService extends FirebaseMessagingService {
@@ -31,11 +25,14 @@ public class PigeonMessagingService extends FirebaseMessagingService {
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
 
-        Callback onMessageReceivedCallback = PigeonClient.getInstance().getOnMessageReceivedCallback();
+        PigeonLog.d(TAG, "Data:"+remoteMessage.getData());
 
-        if(onMessageReceivedCallback != null && remoteMessage.getData().size() > 0){
-            onMessageReceivedCallback.invoke(DataUtilsKt.convertToWritableMap(remoteMessage.getData()));
-        }
+        WritableMap eventProperties = DataUtils.convertToWritableMap(remoteMessage.getData());
+
+        eventProperties.putString("pigeon_notificationTitle", notification.getTitle());
+        eventProperties.putString("pigeon_notificationBody", notification.getBody());
+
+        PigeonClient.getInstance().sendEvent("messageReceived", eventProperties);
 
         if (notification == null) {
             return;

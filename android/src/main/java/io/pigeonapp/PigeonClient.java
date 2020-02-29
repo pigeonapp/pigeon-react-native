@@ -2,10 +2,15 @@ package io.pigeonapp;
 
 import android.os.Build;
 
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 
 import java.io.IOException;
@@ -27,6 +32,7 @@ public class PigeonClient {
     private String publicKey;
     private String customerToken;
     private String deviceToken;
+    private ReactApplicationContext reactApplicationContext;
     private Callback onMessageReceivedCallback;
 
     private OkHttpClient httpClient = new OkHttpClient();
@@ -67,12 +73,18 @@ public class PigeonClient {
         saveContact();
     }
 
-    public void setOnMessageReceivedCallback(Callback callback) {
-        onMessageReceivedCallback = callback;
+    public void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
+        this.reactApplicationContext = reactApplicationContext;
     }
 
-    public Callback getOnMessageReceivedCallback() {
-        return onMessageReceivedCallback;
+    public ReactApplicationContext getReactApplicationContext() {
+        return reactApplicationContext;
+    }
+
+    public void sendEvent(String eventName, @Nullable WritableMap params) {
+        this.reactApplicationContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
     }
 
     public void track(final String event, final ReadableMap data) {
