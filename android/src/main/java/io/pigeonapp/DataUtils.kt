@@ -1,9 +1,7 @@
 @file:JvmName("DataUtils")
 package io.pigeonapp
 
-import com.facebook.react.bridge.ReadableArray
-import com.facebook.react.bridge.ReadableMap
-import com.facebook.react.bridge.ReadableType
+import com.facebook.react.bridge.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.json.JSONException
@@ -40,4 +38,21 @@ fun convertArrayToJson(readableArray: ReadableArray?): JsonArray {
         }
     }
     return jsonArray
+}
+
+@Throws(Exception::class)
+fun convertToWritableMap(map: Map<*, *>): WritableMap {
+    val writableMap: WritableMap = WritableNativeMap()
+    val iterator: Iterator<String> = map.keys.iterator() as Iterator<String>
+    while (iterator.hasNext()) {
+        val key = iterator.next()
+        when (val value = map[key]) {
+            is Boolean -> writableMap.putBoolean(key, (value as Boolean?)!!)
+            is Int -> writableMap.putInt(key, (value as Int?)!!)
+            is Double -> writableMap.putDouble(key, (value as Double?)!!)
+            is String -> writableMap.putString(key, value as String?)
+            else -> writableMap.putString(key, value.toString())
+        }
+    }
+    return writableMap
 }
