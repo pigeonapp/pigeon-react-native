@@ -41,28 +41,18 @@ fun convertArrayToJson(readableArray: ReadableArray?): JsonArray {
     return jsonArray
 }
 
-@Throws(MalformedParametersException::class)
+@Throws(Exception::class)
 fun convertToWritableMap(map: Map<*, *>): WritableMap {
     val writableMap: WritableMap = WritableNativeMap()
     val iterator: Iterator<String> = map.keys.iterator() as Iterator<String>
     while (iterator.hasNext()) {
         val key = iterator.next()
         when (val value = map[key]) {
-            is Boolean -> {
-                writableMap.putBoolean(key, (value as Boolean?)!!)
-            }
-            is Int -> {
-                writableMap.putInt(key, (value as Int?)!!)
-            }
-            is Double -> {
-                writableMap.putDouble(key, (value as Double?)!!)
-            }
-            is String -> {
-                writableMap.putString(key, value as String?)
-            }
-            else -> {
-                writableMap.putString(key, value.toString())
-            }
+            Boolean -> writableMap.putBoolean(key, (value as Boolean?)!!)
+            Int -> writableMap.putInt(key, (value as Int?)!!)
+            Double -> writableMap.putDouble(key, (value as Double?)!!)
+            String -> writableMap.putString(key, value as String?)
+            else -> writableMap.putString(key, value.toString())
         }
     }
     return writableMap

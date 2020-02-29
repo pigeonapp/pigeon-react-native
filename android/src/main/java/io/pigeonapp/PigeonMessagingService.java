@@ -27,17 +27,25 @@ public class PigeonMessagingService extends FirebaseMessagingService {
 
         PigeonLog.d(TAG, "Data:"+remoteMessage.getData());
 
-        WritableMap eventProperties = DataUtils.convertToWritableMap(remoteMessage.getData());
+        WritableMap eventProperties = null;
 
-        eventProperties.putString("pigeon_notificationTitle", notification.getTitle());
-        eventProperties.putString("pigeon_notificationBody", notification.getBody());
+        try {
+            eventProperties = DataUtils.convertToWritableMap(remoteMessage.getData());
+        } catch (Exception e) {
+            PigeonLog.d(TAG, "Encountered an error while parsing notification data");
+            e.printStackTrace();
+        }
+
+
+        if (notification != null) {
+            eventProperties.putString("pigeon_notificationTitle", notification.getTitle());
+            eventProperties.putString("pigeon_notificationBody", notification.getBody());
+        }
 
         PigeonClient.getInstance().sendEvent("messageReceived", eventProperties);
 
-        if (notification == null) {
-            return;
+        if (notification != null) {
+            PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
-
-        PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
     }
 }
