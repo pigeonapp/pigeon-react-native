@@ -15,12 +15,12 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import okhttp3.Call;
+import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import com.facebook.react.bridge.Callback;
 
 public class PigeonClient {
     private static String TAG = "PigeonClient";
@@ -152,7 +152,7 @@ public class PigeonClient {
                 .post(body)
                 .build();
 
-        httpClient.newCall(request).enqueue(new okhttp3.Callback() {
+        httpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 PigeonLog.d(TAG, "Could not save contact: " + deviceName + " " + deviceKind + " " + deviceToken);

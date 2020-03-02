@@ -63,11 +63,6 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void onMessageReceived(Callback callback) {
-        pigeonClient.setOnMessageReceivedCallback(callback);
-    }
-
-    @ReactMethod
     public void setCustomerToken(String customerToken) {
         pigeonClient.setCustomerToken(customerToken);
     }
