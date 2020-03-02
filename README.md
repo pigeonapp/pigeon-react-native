@@ -28,7 +28,6 @@ Pigeon.setCustomerToken('Customer_token_here');
 import Pigeon from 'react-native-pigeon';
 
 // After Pigeon.setup and Pigeon.setCustomerToken
-Pigeon.setCustomerToken('Customer_token_here');
 Pigeon.track('demo_event', { hello: 'world' } /* Event data */);
 ```
 
