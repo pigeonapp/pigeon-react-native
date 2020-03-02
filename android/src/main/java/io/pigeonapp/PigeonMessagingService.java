@@ -7,6 +7,7 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import io.pigeonapp.notificationbuilders.*;
 
 public class PigeonMessagingService extends FirebaseMessagingService {
     private final String TAG = PigeonMessagingService.class.getSimpleName();
@@ -55,6 +56,7 @@ public class PigeonMessagingService extends FirebaseMessagingService {
         pigeonClient.sendEvent("messageReceived", eventProperties);
 
         if (notification != null) {
+            SimpleNotification.show(notification);
             PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
     }
