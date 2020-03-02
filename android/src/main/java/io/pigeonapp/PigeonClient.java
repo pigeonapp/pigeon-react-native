@@ -2,10 +2,15 @@ package io.pigeonapp;
 
 import android.os.Build;
 
+import com.facebook.react.bridge.ReactApplicationContext;
+import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.gson.Gson;
-import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.json.JSONException;
 
 import java.io.IOException;
 
@@ -26,7 +31,7 @@ public class PigeonClient {
     private String publicKey;
     private String customerToken;
     private String deviceToken;
-    private Callback onMessageReceivedCallback;
+    private ReactApplicationContext reactApplicationContext;
 
     private OkHttpClient httpClient = new OkHttpClient();
 
@@ -66,16 +71,72 @@ public class PigeonClient {
         saveContact();
     }
 
-    public void setOnMessageReceivedCallback(Callback callback) {
-        onMessageReceivedCallback = callback;
+    public void setReactApplicationContext(ReactApplicationContext reactApplicationContext) {
+        this.reactApplicationContext = reactApplicationContext;
     }
 
-    public Callback getOnMessageReceivedCallback() {
-        return onMessageReceivedCallback;
+    public ReactApplicationContext getReactApplicationContext() {
+        return reactApplicationContext;
+    }
+
+    public void sendEvent(String eventName, @Nullable WritableMap params) {
+        this.reactApplicationContext
+            .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+            .emit(eventName, params);
+    }
+
+    public void track(final String event, final ReadableMap data) {
+        if (customerToken == null) {
+            PigeonLog.d(TAG, "Customer token not set");
+            return;
+        }
+
+        TrackRequest trackRequest;
+
+        try {
+            trackRequest = new TrackRequest(event, DataUtils.convertMapToJson(data));
+        } catch (JSONException e) {
+            PigeonLog.d(TAG, "Encountered an error while parsing data");
+            e.printStackTrace();
+            return;
+        }
+
+        RequestBody body = RequestBody.create(gson.toJson(trackRequest), JSON);
+
+        Request request = new Request.Builder()
+                .url(baseURI + "/event_logs")
+                .addHeader("X-Customer-Token", customerToken)
+                .addHeader("X-Public-Key", publicKey)
+                .post(body)
+                .build();
+
+        httpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                PigeonLog.d(TAG, "Could not track: " + event + " " + data);
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    PigeonLog.d(TAG, "Encountered an error during track():" + response.body().string());
+                    return;
+                }
+
+                GenericResponse genericResponse = gson.fromJson(response.body().string(), GenericResponse.class);
+                if (!genericResponse.getSuccess()) {
+                    PigeonLog.d(TAG, "Encountered an error during track():" + genericResponse.toString());
+                    return;
+                }
+
+                PigeonLog.d(TAG, "Sent event: " + event + " " + data);
+            }
+        });
     }
 
     private void saveContact() {
-        if (deviceToken == null || customerToken == null || publicKey == null) {
+        if (deviceToken == null || customerToken == null) {
             return;
         }
 
@@ -107,7 +168,7 @@ public class PigeonClient {
                 }
 
                 GenericResponse genericResponse = gson.fromJson(response.body().string(), GenericResponse.class);
-                if (!genericResponse.success) {
+                if (!genericResponse.getSuccess()) {
                     PigeonLog.d(TAG, "Encountered an error during saveContact()");
                     return;
                 }
@@ -115,27 +176,5 @@ public class PigeonClient {
                 PigeonLog.d(TAG, "Saved contact: " + deviceName + " " + deviceKind + " " + deviceToken);
             }
         });
-    }
-
-    private class SaveContactRequest {
-        @SerializedName("name")
-        private String name;
-
-        @SerializedName("kind")
-        private String kind;
-
-        @SerializedName("value")
-        private String value;
-
-        public SaveContactRequest(String name, String kind, String value) {
-            this.name = name;
-            this.kind = kind;
-            this.value = value;
-        }
-    }
-
-    private class GenericResponse {
-        @SerializedName("success")
-        private Boolean success;
     }
 }
