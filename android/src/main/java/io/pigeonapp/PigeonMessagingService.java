@@ -56,7 +56,7 @@ public class PigeonMessagingService extends FirebaseMessagingService {
         pigeonClient.sendEvent("messageReceived", eventProperties);
 
         if (notification != null) {
-            SimpleNotification.show(notification);
+            CarousalNotification.showCarousal(notification);
             PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
     }
