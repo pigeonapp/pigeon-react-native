@@ -2,11 +2,11 @@
 
 ## Getting started
 
-`$ npm install react-native-pigeon --save`
+`$ yarn add react-native-pigeon`
 
 or 
 
-`$ yarn add react-native-pigeon`
+`$ npm install react-native-pigeon --save`
 
 ### Mostly automatic installation
 
@@ -16,8 +16,8 @@ or
 ```javascript
 import Pigeon from 'react-native-pigeon';
 
-Pigeon.setup({ publicKey: 'Your_public_key' });
-Pigeon.setCustomerToken('Customer_token_here');
+Pigeon.setup({ publicKey: 'your_public_key' });
+Pigeon.setCustomerToken('customer_token_here');
 ```
 
 ## Track Events
