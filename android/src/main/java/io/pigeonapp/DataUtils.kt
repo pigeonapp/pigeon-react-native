@@ -40,12 +40,18 @@ fun convertArrayToJson(readableArray: ReadableArray?): JsonArray {
     return jsonArray
 }
 
+@JvmOverloads
 @Throws(Exception::class)
-fun convertToWritableMap(map: Map<*, *>): WritableMap {
+fun convertToWritableMap(map: Map<*, *>, blacklist: List<String> = emptyList<String>()): WritableMap {
     val writableMap: WritableMap = WritableNativeMap()
     val iterator: Iterator<String> = map.keys.iterator() as Iterator<String>
     while (iterator.hasNext()) {
         val key = iterator.next()
+
+        if(blacklist.contains(key)) {
+            continue;
+        }
+
         when (val value = map[key]) {
             is Boolean -> writableMap.putBoolean(key, (value as Boolean?)!!)
             is Int -> writableMap.putInt(key, (value as Int?)!!)
