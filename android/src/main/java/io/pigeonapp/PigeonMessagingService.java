@@ -7,7 +7,6 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-
 public class PigeonMessagingService extends FirebaseMessagingService {
     private final String TAG = PigeonMessagingService.class.getSimpleName();
 
