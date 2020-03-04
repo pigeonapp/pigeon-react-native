@@ -144,7 +144,6 @@ public class PigeonClient {
         final String deviceKind = "android";
 
         SaveContactRequest saveContactRequest = new SaveContactRequest(deviceKind, deviceName, deviceToken);
-
         RequestBody body = RequestBody.create(gson.toJson(saveContactRequest), JSON);
         Request request = new Request.Builder()
                 .url(baseURI + "/contacts")
