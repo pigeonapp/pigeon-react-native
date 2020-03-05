@@ -7,8 +7,11 @@ import com.facebook.react.bridge.WritableMap;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Arrays;
+
 public class PigeonMessagingService extends FirebaseMessagingService {
     private final String TAG = PigeonMessagingService.class.getSimpleName();
+    private final String PIGEON_FILTER_KEY = "pigeon_pn_type";
 
     private PigeonClient pigeonClient;
 
@@ -37,24 +40,22 @@ public class PigeonMessagingService extends FirebaseMessagingService {
         WritableMap eventProperties = Arguments.createMap();
 
         try {
-            eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData()));
+            eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(PIGEON_FILTER_KEY)));
         } catch (Exception e) {
             PigeonLog.d(TAG, "Encountered an error while parsing notification data");
             e.printStackTrace();
         }
-
 
         if (notification != null) {
             WritableMap notificationProperties = Arguments.createMap();
             notificationProperties.putString("title", notification.getTitle());
             notificationProperties.putString("body", notification.getBody());
             eventProperties.putMap("notification", notificationProperties);
+            PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
 
-        pigeonClient.sendEvent("messageReceived", eventProperties);
-
-        if (notification != null) {
-            PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
+        if (remoteMessage.getData().containsKey(PIGEON_FILTER_KEY)) {
+            pigeonClient.sendEvent("messageReceived", eventProperties);
         }
     }
 }

@@ -23,7 +23,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class PigeonClient {
-    private static String TAG = "PigeonClient";
+    private static String TAG = PigeonClient.class.getSimpleName();
 
     private static PigeonClient instance = null;
 
