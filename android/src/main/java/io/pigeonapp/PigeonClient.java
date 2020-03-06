@@ -88,10 +88,14 @@ public class PigeonClient {
     }
 
     public void handleMessage(RemoteMessage remoteMessage) {
+        if (!canHandleMessage(remoteMessage)) {
+            return;
+        }
+
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         WritableMap eventProperties = Arguments.createMap();
 
-        PigeonLog.d(TAG, "Data:" + remoteMessage.getData());
+        PigeonLog.d(TAG, "Data: " + remoteMessage.getData());
 
         try {
             eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(PIGEON_FILTER_KEY)));
@@ -108,9 +112,7 @@ public class PigeonClient {
             PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
 
-        if (canHandleMessage(remoteMessage)) {
-            sendEvent("messageReceived", eventProperties);
-        }
+        sendEvent("messageReceived", eventProperties);
     }
 
     public void sendEvent(String eventName, @Nullable WritableMap params) {
