@@ -2,10 +2,12 @@ package io.pigeonapp;
 
 import android.os.Build;
 
+import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
+import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
 import org.jetbrains.annotations.NotNull;
@@ -13,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -24,6 +27,7 @@ import okhttp3.Response;
 
 public class PigeonClient {
     private static String TAG = PigeonClient.class.getSimpleName();
+    private final String PIGEON_FILTER_KEY = "pigeon_pn_type";
 
     private static PigeonClient instance = null;
 
@@ -77,6 +81,32 @@ public class PigeonClient {
 
     public ReactApplicationContext getReactApplicationContext() {
         return reactApplicationContext;
+    }
+
+    public void handleMessage(RemoteMessage remoteMessage) {
+        RemoteMessage.Notification notification = remoteMessage.getNotification();
+        WritableMap eventProperties = Arguments.createMap();
+
+        PigeonLog.d(TAG, "Data:" + remoteMessage.getData());
+
+        try {
+            eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(PIGEON_FILTER_KEY)));
+        } catch (Exception e) {
+            PigeonLog.d(TAG, "Encountered an error while parsing notification data");
+            e.printStackTrace();
+        }
+
+        if (notification != null) {
+            WritableMap notificationProperties = Arguments.createMap();
+            notificationProperties.putString("title", notification.getTitle());
+            notificationProperties.putString("body", notification.getBody());
+            eventProperties.putMap("notification", notificationProperties);
+            PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
+        }
+
+        if (remoteMessage.getData().containsKey(PIGEON_FILTER_KEY)) {
+            sendEvent("messageReceived", eventProperties);
+        }
     }
 
     public void sendEvent(String eventName, @Nullable WritableMap params) {
