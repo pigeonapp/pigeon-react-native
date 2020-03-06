@@ -31,6 +31,7 @@ object PigeonLog {
         }
     }
 
+    @JvmStatic
     fun i(tag: String?, logText: String?) {
         if (logLevel.code >= LogLevel.INFO.code) {
             Log.i(tag, logText)
