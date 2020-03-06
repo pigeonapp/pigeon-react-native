@@ -83,6 +83,10 @@ public class PigeonClient {
         return reactApplicationContext;
     }
 
+    public Boolean canHandleMessage(RemoteMessage remoteMessage) {
+        return remoteMessage.getData().containsKey(PIGEON_FILTER_KEY);
+    }
+
     public void handleMessage(RemoteMessage remoteMessage) {
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         WritableMap eventProperties = Arguments.createMap();
@@ -104,7 +108,7 @@ public class PigeonClient {
             PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
 
-        if (remoteMessage.getData().containsKey(PIGEON_FILTER_KEY)) {
+        if (canHandleMessage(remoteMessage)) {
             sendEvent("messageReceived", eventProperties);
         }
     }
