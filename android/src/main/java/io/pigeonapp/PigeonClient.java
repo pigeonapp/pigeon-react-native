@@ -27,7 +27,6 @@ import okhttp3.Response;
 
 public class PigeonClient {
     private static String TAG = PigeonClient.class.getSimpleName();
-    private final String PIGEON_FILTER_KEY = "pigeon_pn_type";
 
     private static PigeonClient instance = null;
 
@@ -84,7 +83,7 @@ public class PigeonClient {
     }
 
     public Boolean canHandleMessage(RemoteMessage remoteMessage) {
-        return remoteMessage.getData().containsKey(PIGEON_FILTER_KEY);
+        return remoteMessage.getData().containsKey(Constants.MESSAGE_FILTER_KEY);
     }
 
     public void handleMessage(RemoteMessage remoteMessage) {
@@ -98,7 +97,7 @@ public class PigeonClient {
         PigeonLog.d(TAG, "Data: " + remoteMessage.getData());
 
         try {
-            eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(PIGEON_FILTER_KEY)));
+            eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(Constants.MESSAGE_FILTER_KEY)));
         } catch (Exception e) {
             PigeonLog.d(TAG, "Encountered an error while parsing notification data");
             e.printStackTrace();
@@ -123,7 +122,7 @@ public class PigeonClient {
 
     public void track(final String event, final ReadableMap data) {
         if (customerToken == null) {
-            PigeonLog.d(TAG, "Customer token not set");
+            PigeonLog.d(TAG, "Customer token not set, failed sending event: " + event);
             return;
         }
 

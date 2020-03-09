@@ -1,5 +1,6 @@
 package io.pigeonapp;
 
+import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -40,6 +41,11 @@ public class PigeonModule extends ReactContextBaseJavaModule {
     public void setup(ReadableMap config) {
         String publicKey = config.getString("publicKey");
         pigeonClient.setPublicKey(publicKey);
+
+        if(config.getBoolean("trackAppLifecycle")) {
+            Application application = (Application) this.reactContext.getApplicationContext();
+            application.registerActivityLifecycleCallbacks(new PigeonActivityLifecycleCallbacks());
+        }
 
         FirebaseInstanceId.getInstance().getInstanceId()
             .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
