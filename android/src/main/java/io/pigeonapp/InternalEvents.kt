@@ -28,8 +28,6 @@ fun PigeonClient.trackAppStarted() {
     eventProperties.putString("version", packageInfo.versionName)
     eventProperties.putString("build", currentBuild.toString())
 
-    PigeonLog.d("PigeonClient", currentBuild.toString())
-
     when {
         context.getPigeonSharedPreferences().getLong(PREF_KEY_BUILD, Long.MIN_VALUE) == Long.MIN_VALUE ->
             this.track(INTERNAL_EVENT_FIRST_OPEN, eventProperties)
