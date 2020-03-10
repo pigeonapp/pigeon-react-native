@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.text.format.DateUtils
 import com.facebook.react.bridge.Arguments
 import kotlin.math.roundToInt
 
@@ -45,7 +46,7 @@ fun PigeonClient.trackAppStarted() {
 fun PigeonClient.trackAppSession(elapsedTime: Double) {
     val elapsedTimeRounded = ((elapsedTime / 1000) * 10.0).roundToInt() / 10.0
     val eventProperties = Arguments.createMap()
-    eventProperties.putString("session_length", elapsedTimeRounded.toString())
+    eventProperties.putString("session_length", DateUtils.formatElapsedTime(elapsedTimeRounded.toLong()))
     this.track(INTERNAL_EVENT_APP_BACKGROUNDED, eventProperties)
 }
 
