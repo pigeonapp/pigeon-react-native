@@ -1,13 +1,21 @@
 @file:JvmName("Constants")
 package io.pigeonapp
 
-const val MESSAGE_FILTER_KEY = "pigeon_pn_type"
 const val PACKAGE_NAME = "io.pigeonapp"
 const val DEFAULT_INSTANCE = "default"
+
+const val CONFIG_PUBLIC_KEY = "publicKey"
+const val CONFIG_TRACK_APP_LIFECYCLE_EVENTS = "trackAppLifecycleEvents"
+const val CONFIG_TRACK_APP_EXCEPTIONS = "trackAppExceptions"
+
+const val INTERNAL_EVENT_APP_INSTALLED = "Application Installed"
+const val INTERNAL_EVENT_APP_UPDATED = "Application Updated"
+const val INTERNAL_EVENT_APP_OPENED = "Application Opened"
+const val INTERNAL_EVENT_APP_BACKGROUNDED = "Application Backgrounded"
+const val INTERNAL_EVENT_APP_CRASHED = "Application Crashed"
+
+const val MESSAGE_FILTER_KEY = "pigeon_pn_type"
+
 const val SHARED_PREFERENCES_PREFIX = PACKAGE_NAME
-const val PREF_KEY_BUILD = "$SHARED_PREFERENCES_PREFIX.$DEFAULT_INSTANCE.build"
-const val PREF_KEY_VERSION_NAME = "$SHARED_PREFERENCES_PREFIX.$DEFAULT_INSTANCE.version_name"
-const val INTERNAL_EVENT_FIRST_OPEN = "App first open"
-const val INTERNAL_EVENT_APP_UPDATED = "App updated"
-const val INTERNAL_EVENT_APP_OPENED = "App opened"
-const val INTERNAL_EVENT_SESSION = "App session ended"
+const val SHARED_PREFERENCES_KEY_BUILD = "$SHARED_PREFERENCES_PREFIX.$DEFAULT_INSTANCE.build"
+const val SHARED_PREFERENCES_KEY_VERSION = "$SHARED_PREFERENCES_PREFIX.$DEFAULT_INSTANCE.version"

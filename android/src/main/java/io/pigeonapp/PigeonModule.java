@@ -39,12 +39,15 @@ public class PigeonModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setup(ReadableMap config) {
-        String publicKey = config.getString("publicKey");
+        String publicKey = config.getString(Constants.CONFIG_PUBLIC_KEY);
         pigeonClient.setPublicKey(publicKey);
 
-        if(config.getBoolean("trackAppLifecycle")) {
-            Application application = (Application) this.reactContext.getApplicationContext();
-            application.registerActivityLifecycleCallbacks(new PigeonActivityLifecycleCallbacks());
+        if (config.getBoolean(Constants.CONFIG_TRACK_APP_LIFECYCLE_EVENTS)) {
+            PigeonActivityLifecycleCallbacks.Companion.enablePigeonActivityLifecycleCallbacks(this.reactContext.getApplicationContext());
+        }
+
+        if (config.getBoolean(Constants.CONFIG_TRACK_APP_EXCEPTIONS)) {
+            PigeonExceptionHandler.Companion.enablePigeonExceptionHandler();
         }
 
         FirebaseInstanceId.getInstance().getInstanceId()

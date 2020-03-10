@@ -29,16 +29,16 @@ fun PigeonClient.trackAppStarted() {
     eventProperties.putString("build", currentBuild.toString())
 
     when {
-        context.getPigeonSharedPreferences().getLong(PREF_KEY_BUILD, Long.MIN_VALUE) == Long.MIN_VALUE ->
-            this.track(INTERNAL_EVENT_FIRST_OPEN, eventProperties)
-        context.getPigeonSharedPreferences().getLong(PREF_KEY_BUILD, Long.MIN_VALUE) < currentBuild ->
+        context.getPigeonSharedPreferences().getLong(SHARED_PREFERENCES_KEY_BUILD, Long.MIN_VALUE) == Long.MIN_VALUE ->
+            this.track(INTERNAL_EVENT_APP_INSTALLED, eventProperties)
+        context.getPigeonSharedPreferences().getLong(SHARED_PREFERENCES_KEY_BUILD, Long.MIN_VALUE) < currentBuild ->
             this.track(INTERNAL_EVENT_APP_UPDATED, eventProperties)
         else -> this.track(INTERNAL_EVENT_APP_OPENED, eventProperties)
     }
 
     val editor: SharedPreferences.Editor = context.getPigeonSharedPreferences().edit()
-    editor.putString(PREF_KEY_VERSION_NAME, packageInfo.versionName)
-    editor.putLong(PREF_KEY_BUILD, currentBuild)
+    editor.putString(SHARED_PREFERENCES_KEY_VERSION, packageInfo.versionName)
+    editor.putLong(SHARED_PREFERENCES_KEY_BUILD, currentBuild)
     editor.apply()
 }
 
@@ -46,5 +46,12 @@ fun PigeonClient.trackAppSession(elapsedTime: Double) {
     val elapsedTimeRounded = ((elapsedTime / 1000) * 10.0).roundToInt() / 10.0
     val eventProperties = Arguments.createMap()
     eventProperties.putString("session_length", elapsedTimeRounded.toString())
-    this.track(INTERNAL_EVENT_SESSION, eventProperties)
+    this.track(INTERNAL_EVENT_APP_BACKGROUNDED, eventProperties)
+}
+
+fun PigeonClient.trackAppCrashed(exception: Throwable?) {
+    val message = exception?.message
+    val eventProperties = Arguments.createMap()
+    eventProperties.putString("exception", message)
+    this.track(INTERNAL_EVENT_APP_CRASHED, eventProperties)
 }
