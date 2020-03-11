@@ -43,7 +43,7 @@ fun convertArrayToJson(readableArray: ReadableArray?): JsonArray {
 @JvmOverloads
 @Throws(Exception::class)
 fun convertToWritableMap(map: Map<*, *>, blacklist: List<String> = emptyList<String>()): WritableMap {
-    val writableMap: WritableMap = WritableNativeMap()
+    val writableMap: WritableMap = WritableNativeMap() as WritableMap
     val iterator: Iterator<String> = map.keys.iterator() as Iterator<String>
     while (iterator.hasNext()) {
         val key = iterator.next()

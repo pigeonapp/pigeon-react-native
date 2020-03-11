@@ -10,6 +10,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
@@ -17,30 +18,17 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.Arrays;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
-
 public class PigeonClient {
     private static String TAG = PigeonClient.class.getSimpleName();
 
     private static PigeonClient instance = null;
 
-    private String baseURI = "https://api.pigeonapp.io/v1";
     private String publicKey;
     private String customerToken;
     private String deviceToken;
     private ReactApplicationContext reactApplicationContext;
 
-    private OkHttpClient httpClient = new OkHttpClient();
-
     private Gson gson = new Gson();
-
-    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
 
     public static PigeonClient getInstance() {
         if (instance == null) {
@@ -51,7 +39,7 @@ public class PigeonClient {
     }
 
     public void setBaseURI(String baseURI) {
-        this.baseURI = baseURI;
+        HttpClient.setBaseUri(baseURI);
     }
 
     public void setPublicKey(String publicKey) {
@@ -136,16 +124,12 @@ public class PigeonClient {
             return;
         }
 
-        RequestBody body = RequestBody.create(gson.toJson(trackRequest), JSON);
+        Headers headers = new Headers.Builder()
+            .add("X-Customer-Token", customerToken)
+            .add("X-Public-Key", publicKey)
+            .build();
 
-        Request request = new Request.Builder()
-                .url(baseURI + "/event_logs")
-                .addHeader("X-Customer-Token", customerToken)
-                .addHeader("X-Public-Key", publicKey)
-                .post(body)
-                .build();
-
-        httpClient.newCall(request).enqueue(new Callback() {
+        Callback callback = new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 PigeonLog.d(TAG, "Could not track: " + event + " " + data);
@@ -167,7 +151,9 @@ public class PigeonClient {
 
                 PigeonLog.d(TAG, "Sent event: " + event + " " + data);
             }
-        });
+        };
+
+        HttpClient.post("/event_logs", gson.toJson(trackRequest), headers, callback);
     }
 
     private void saveContact() {
@@ -179,15 +165,13 @@ public class PigeonClient {
         final String deviceKind = "android";
 
         SaveContactRequest saveContactRequest = new SaveContactRequest(deviceKind, deviceName, deviceToken);
-        RequestBody body = RequestBody.create(gson.toJson(saveContactRequest), JSON);
-        Request request = new Request.Builder()
-                .url(baseURI + "/contacts")
-                .addHeader("X-Public-Key", publicKey)
-                .addHeader("X-Customer-Token", customerToken)
-                .post(body)
-                .build();
 
-        httpClient.newCall(request).enqueue(new Callback() {
+        Headers headers = new Headers.Builder()
+            .add("X-Customer-Token", customerToken)
+            .add("X-Public-Key", publicKey)
+            .build();
+
+        Callback callback = new Callback() {
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 PigeonLog.d(TAG, "Could not save contact: " + deviceName + " " + deviceKind + " " + deviceToken);
@@ -210,6 +194,46 @@ public class PigeonClient {
 
                 PigeonLog.d(TAG, "Saved contact: " + deviceName + " " + deviceKind + " " + deviceToken);
             }
-        });
+        };
+
+        HttpClient.post("/contacts", gson.toJson(saveContactRequest), headers, callback);
+    }
+
+    public void batchedTrack(final BatchedTrackRequest[] events) {
+        if (customerToken == null) {
+            PigeonLog.d(TAG, "Customer token not set, failed sending batched events");
+            return;
+        }
+
+        Headers headers = new Headers.Builder()
+            .add("X-Customer-Token", customerToken)
+            .add("X-Public-Key", publicKey)
+            .build();
+
+        Callback callback = new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                PigeonLog.d(TAG, "Could not track: " + Arrays.toString(events));
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                if (!response.isSuccessful()) {
+                    PigeonLog.d(TAG, "Encountered an error during track():" + response.body().string());
+                    return;
+                }
+
+                GenericResponse genericResponse = gson.fromJson(response.body().string(), GenericResponse.class);
+                if (!genericResponse.getSuccess()) {
+                    PigeonLog.d(TAG, "Encountered an error during track():" + genericResponse.toString());
+                    return;
+                }
+
+                PigeonLog.d(TAG, "Sent batched events" + Arrays.toString(events));
+            }
+        };
+
+        HttpClient.post("/event_logs", gson.toJson(events), headers, callback);
     }
 }

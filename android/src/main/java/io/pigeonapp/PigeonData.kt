@@ -13,6 +13,12 @@ data class TrackRequest(
     val data: JsonObject
 )
 
+data class BatchedTrackRequest(
+    val events: String,
+    val timestamp: Long,
+    val data: JsonObject
+)
+
 data class GenericResponse(
     val success: Boolean
 )
