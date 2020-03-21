@@ -10,6 +10,8 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
+import io.pigeonapp.notificationbuilders.CarousalNotification;
+import io.pigeonapp.notificationbuilders.RatingNotification;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
@@ -111,6 +113,8 @@ public class PigeonClient {
             eventProperties.putMap("notification", notificationProperties);
             PigeonLog.d(TAG, "onMessageReceived: " + notification.getTitle());
         }
+
+        CarousalNotification.showCarousal(eventProperties);
 
         sendEvent("messageReceived", eventProperties);
     }
