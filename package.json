@@ -12,11 +12,6 @@
     "url": "git+https://github.com/pigeonapp/pigeon-react-native",
     "baseUrl": "https://github.com/pigeonapp/pigeon-react-native"
   },
-  "files": [
-    "index.js",
-    "android",
-    "ios"
-  ],
   "keywords": [
     "react-native",
     "pigeon"
