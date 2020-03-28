@@ -50,6 +50,10 @@ public class PigeonModule extends ReactContextBaseJavaModule {
             PigeonExceptionHandler.Companion.enablePigeonExceptionHandler();
         }
 
+        if (config.getBoolean(Constants.CONFIG_RECORD_SCREEN_VIEWS)) {
+            PigeonActivityLifecycleCallbacks.Companion.enableRecordScreenViews();
+        }
+
         FirebaseInstanceId.getInstance().getInstanceId()
             .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
                 @Override

@@ -120,6 +120,13 @@ public class PigeonClient {
             .emit(eventName, params);
     }
 
+    public void screen(final String name, final ReadableMap properties) {
+        WritableMap data = Arguments.createMap();
+        data.putString("name", name);
+        data.putMap("properties", properties);
+        track(Constants.INTERNAL_EVENT_APP_SCREEN_CHANGED, data);
+    }
+
     public void track(final String event, final ReadableMap data) {
         if (customerToken == null) {
             PigeonLog.d(TAG, "Customer token not set, failed sending event: " + event);
