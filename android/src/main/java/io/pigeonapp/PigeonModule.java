@@ -1,6 +1,5 @@
 package io.pigeonapp;
 
-import android.app.Application;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -25,6 +24,7 @@ public class PigeonModule extends ReactContextBaseJavaModule {
         this.reactContext = reactContext;
         this.pigeonClient = PigeonClient.getInstance();
         this.pigeonClient.setReactApplicationContext(reactContext);
+        this.pigeonClient.generateAnonymousUid();
     }
 
     @Override
