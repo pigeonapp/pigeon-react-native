@@ -1,10 +1,20 @@
-@file:JvmName("DataUtils")
+@file:JvmName("Utils")
 package io.pigeonapp
 
+import android.content.Context
+import android.content.SharedPreferences
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import com.facebook.react.bridge.*
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import org.json.JSONException
+
+fun Context.getPackageInfo(): PackageInfo = this.packageManager.getPackageInfo(this.packageName, PackageManager.GET_META_DATA)
+
+fun getPrefKey(context: Context) = "$PACKAGE_NAME.$DEFAULT_INSTANCE.$context.packageName"
+
+fun Context.getPigeonSharedPreferences(): SharedPreferences = this.getSharedPreferences(getPrefKey(this), Context.MODE_PRIVATE)
 
 @Throws(JSONException::class)
 fun convertMapToJson(readableMap: ReadableMap?): JsonObject {
