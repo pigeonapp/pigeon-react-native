@@ -3,6 +3,7 @@ package io.pigeonapp;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import android.util.Log;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
@@ -163,6 +164,8 @@ public class PigeonClient {
                 .addHeader("X-Public-Key", publicKey)
                 .post(body)
                 .build();
+
+        PigeonLog.d(TAG, request.toString() + " " + gson.toJson(trackRequest));
 
         httpClient.newCall(request).enqueue(new Callback() {
             @Override

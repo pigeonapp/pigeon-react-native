@@ -11,7 +11,7 @@ import com.facebook.react.bridge.Arguments
 
 
 class PigeonActivityLifecycleCallbacks private constructor() : Application.ActivityLifecycleCallbacks {
-    private val TAG = PigeonLog::class.qualifiedName
+    private val TAG = PigeonActivityLifecycleCallbacks::class.java.simpleName
     private val pigeonClient: PigeonClient = PigeonClient.getInstance()
     private var startSession: Double = System.currentTimeMillis().toDouble()
 
