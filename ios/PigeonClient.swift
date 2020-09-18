@@ -10,10 +10,6 @@ class PigeonClient {
     private var customerToken: String?
     private var baseUri: String = "https://api.pigeonapp.io/v1"
 
-    private init() {
-        generateAnonymousUid()
-    }
-
     func setBaseUri(to: String) {
         self.baseUri = to
     }
@@ -32,18 +28,6 @@ class PigeonClient {
         self.customerToken = to
         
         saveContact()
-    }
-
-    private func generateAnonymousUid(withRegenerate: Bool = false) {
-        let preferences = UserDefaults.standard
-        let anonymousUidKey = Constants.USER_PREFERENCES_KEY_ANONYMOUS_UID
-
-        if !withRegenerate && preferences.object(forKey: anonymousUidKey) != nil {
-            self.anonymousUid = preferences.string(forKey: anonymousUidKey) ?? nil
-        } else {
-            self.anonymousUid = UUID().uuidString
-            preferences.set(self.anonymousUid, forKey: anonymousUidKey)
-        }
     }
 
     private func makeHttpRequest<T: Encodable>(
