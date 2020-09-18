@@ -113,7 +113,7 @@ class PigeonClient {
         let deviceKind = "IOS"
         let deviceName = UIDevice().name
         let saveContactRequest = SaveContactRequest(
-            name: deviceName, value: deviceToken!, kind:deviceKind
+            name: deviceName, value: deviceToken!, kind: deviceKind
         )
 
         PigeonLog.d(tag: #function, "Calling saveContact with \(saveContactRequest)")
