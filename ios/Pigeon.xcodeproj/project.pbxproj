@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		710139812514D8310029B1D5 /* Pigeon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139802514D8310029B1D5 /* Pigeon.swift */; };
+		710139832514D90C0029B1D5 /* PigeonLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139822514D90C0029B1D5 /* PigeonLog.swift */; };
+		710139852514D9400029B1D5 /* PigeonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139842514D9400029B1D5 /* PigeonClient.swift */; };
+		710139872514DB810029B1D5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139862514DB810029B1D5 /* Constants.swift */; };
+		710139892514DBAD0029B1D5 /* PigeonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139882514DBAD0029B1D5 /* PigeonData.swift */; };
 		B3E7B58A1CC2AC0600A0062D /* Pigeon.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Pigeon.m */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +29,12 @@
 
 /* Begin PBXFileReference section */
 		134814201AA4EA6300B7C361 /* libPigeon.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPigeon.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		B3E7B5881CC2AC0600A0062D /* Pigeon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Pigeon.h; sourceTree = "<group>"; };
+		7101397F2514D8310029B1D5 /* Pigeon-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Pigeon-Bridging-Header.h"; sourceTree = "<group>"; };
+		710139802514D8310029B1D5 /* Pigeon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pigeon.swift; sourceTree = "<group>"; };
+		710139822514D90C0029B1D5 /* PigeonLog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonLog.swift; sourceTree = "<group>"; };
+		710139842514D9400029B1D5 /* PigeonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonClient.swift; sourceTree = "<group>"; };
+		710139862514DB810029B1D5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		710139882514DBAD0029B1D5 /* PigeonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonData.swift; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Pigeon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pigeon.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -50,9 +60,14 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
-				B3E7B5881CC2AC0600A0062D /* Pigeon.h */,
+				710139882514DBAD0029B1D5 /* PigeonData.swift */,
+				710139862514DB810029B1D5 /* Constants.swift */,
+				710139842514D9400029B1D5 /* PigeonClient.swift */,
+				710139822514D90C0029B1D5 /* PigeonLog.swift */,
+				710139802514D8310029B1D5 /* Pigeon.swift */,
 				B3E7B5891CC2AC0600A0062D /* Pigeon.m */,
 				134814211AA4EA7D00B7C361 /* Products */,
+				7101397F2514D8310029B1D5 /* Pigeon-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -87,6 +102,7 @@
 				TargetAttributes = {
 					58B511DA1A9E6C8500147676 = {
 						CreatedOnToolsVersion = 6.1.1;
+						LastSwiftMigration = 1160;
 					};
 				};
 			};
@@ -95,6 +111,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 58B511D21A9E6C8500147676;
@@ -112,7 +129,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				710139872514DB810029B1D5 /* Constants.swift in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Pigeon.m in Sources */,
+				710139812514D8310029B1D5 /* Pigeon.swift in Sources */,
+				710139852514D9400029B1D5 /* PigeonClient.swift in Sources */,
+				710139832514D90C0029B1D5 /* PigeonLog.swift in Sources */,
+				710139892514DBAD0029B1D5 /* PigeonData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -215,32 +237,41 @@
 		58B511F01A9E6C8500147676 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				HEADER_SEARCH_PATHS = (
-				"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/../../../React/**",
-					"$(SRCROOT)/../../react-native/React/**",
-				);
-				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_NAME = Pigeon;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		58B511F11A9E6C8500147676 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../../../React/**",
 					"$(SRCROOT)/../../react-native/React/**",
 				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = Pigeon;
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pigeon-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		58B511F11A9E6C8500147676 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)/../../../React/**",
+					"$(SRCROOT)/../../react-native/React/**",
+				);
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = Pigeon;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Pigeon-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
