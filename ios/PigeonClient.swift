@@ -77,6 +77,7 @@ class PigeonClient {
 
     func track(_ event: String, withData: NSDictionary?) {
         if customerToken == nil {
+            PigeonLog.d(tag: #function, "track failed, customerToken: \(customerToken)")
             return
         }
 
@@ -105,7 +106,7 @@ class PigeonClient {
 
     func saveContact() {
         if deviceToken == nil || customerToken == nil {
-            PigeonLog.d(tag: #function, "Tried saveConatact with deviceToken: \(deviceToken) customerToken: \(customerToken)")
+            PigeonLog.d(tag: #function, "saveContact failed, deviceToken: \(deviceToken) customerToken: \(customerToken)")
             return
         }
 
