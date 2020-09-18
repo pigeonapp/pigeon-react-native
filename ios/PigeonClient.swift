@@ -24,10 +24,14 @@ class PigeonClient {
 
     func setDeviceToken(to: String) {
         self.deviceToken = to
+        
+        saveContact()
     }
 
     func setCustomerToken(to: String) {
         self.customerToken = to
+        
+        saveContact()
     }
 
     private func generateAnonymousUid(withRegenerate: Bool = false) {
@@ -101,6 +105,7 @@ class PigeonClient {
 
     func saveContact() {
         if deviceToken == nil || customerToken == nil {
+            PigeonLog.d(tag: #function, "Tried saveConatact with deviceToken: \(deviceToken) customerToken: \(customerToken)")
             return
         }
 

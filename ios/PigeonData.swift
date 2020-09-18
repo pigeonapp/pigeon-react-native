@@ -5,10 +5,6 @@ struct TrackRequest: Encodable {
     let data: JSONValue?
 }
 
-struct SaveContactRequest: Encodable {
-    let name, value, kind: String
-}
-
 public enum JSONValue: Decodable, Encodable {
     case bool(Bool)
     case int(Int)
@@ -58,4 +54,8 @@ public enum JSONValue: Decodable, Encodable {
             try container.encodeNil()
         }
     }
+}
+
+struct SaveContactRequest: Encodable {
+    let name, value, kind: String
 }

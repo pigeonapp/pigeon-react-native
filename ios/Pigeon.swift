@@ -20,14 +20,14 @@ class Pigeon: NSObject {
         
         PigeonLog.d(tag: #function, "Initialised with \(options)")
 
-//        InstanceID.instanceID().instanceID { (result, error) in
-//            if let error = error {
-//                PigeonLog.d(tag: #function, "Error fetching remote instance ID: \(error)")
-//            } else if let result = result {
-//                PigeonLog.d(tag:  #function, "Firebase initialised with: \(result.token)")
-//                self.pigeonClient.setDeviceToken(to: result.token)
-//            }
-//        }
+        InstanceID.instanceID().instanceID { (result, error) in
+            if let error = error {
+                PigeonLog.d(tag: #function, "Error fetching remote instance ID: \(error)")
+            } else if let result = result {
+                PigeonLog.d(tag:  #function, "Firebase initialised with: \(result.token)")
+                self.pigeonClient.setDeviceToken(to: result.token)
+            }
+        }
     }
         
     @objc
