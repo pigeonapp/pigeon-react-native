@@ -2,8 +2,34 @@ import Foundation
 import FirebaseInstanceID
 
 @objc(Pigeon)
-class Pigeon: NSObject {
+class Pigeon: RCTEventEmitter {
     private var pigeonClient = PigeonClient.instance
+    
+    override init() {
+        super.init()
+        PigeonEventEmitter.sharedInstance.registerEventEmitter(eventEmitter: self)
+    }
+    
+    override func supportedEvents() -> [String] {
+       return ["messageReceived"]
+    }
+            
+    @objc
+    func handleMessage(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any]) {
+        var properties: Dictionary<String, Dictionary<String, Any>> = [ "notification": [:] ]
+        
+        PigeonLog.d(tag: #function, "Received APN: \(userInfo)")
+        
+        guard let remoteMessage = try? FirebaseRemoteMessage(decoding: userInfo) else {
+            PigeonLog.d(tag: #function, "Non firebase notification received: \(userInfo)")
+            return
+        }
+        
+        properties["notification"]?["title"] = remoteMessage.aps.alert.title
+        properties["notification"]?["body"] = remoteMessage.aps.alert.body
+        
+        PigeonEventEmitter.sharedInstance.dispatch(name: "messageReceived", body: properties)
+    }
 
     @objc
     func setLogLevel(_ logLevel: Int) {
@@ -17,6 +43,8 @@ class Pigeon: NSObject {
         if let baseUri = options?.value(forKey: "baseUri") {
             pigeonClient.setBaseUri(to: baseUri as! String)
         }
+        
+        PigeonAppDelegate.swizzleDidReceiveRemoteNotification()
         
         PigeonLog.d(tag: #function, "Initialised with \(options)")
 

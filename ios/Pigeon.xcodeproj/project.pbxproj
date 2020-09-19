@@ -12,6 +12,8 @@
 		710139852514D9400029B1D5 /* PigeonClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139842514D9400029B1D5 /* PigeonClient.swift */; };
 		710139872514DB810029B1D5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139862514DB810029B1D5 /* Constants.swift */; };
 		710139892514DBAD0029B1D5 /* PigeonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 710139882514DBAD0029B1D5 /* PigeonData.swift */; };
+		7101398E251523050029B1D5 /* PigeonAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101398D251523050029B1D5 /* PigeonAppDelegate.swift */; };
+		710139902515D7170029B1D5 /* PigeonEventEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7101398F2515D7170029B1D5 /* PigeonEventEmitter.swift */; };
 		B3E7B58A1CC2AC0600A0062D /* Pigeon.m in Sources */ = {isa = PBXBuildFile; fileRef = B3E7B5891CC2AC0600A0062D /* Pigeon.m */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +37,8 @@
 		710139842514D9400029B1D5 /* PigeonClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonClient.swift; sourceTree = "<group>"; };
 		710139862514DB810029B1D5 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		710139882514DBAD0029B1D5 /* PigeonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonData.swift; sourceTree = "<group>"; };
+		7101398D251523050029B1D5 /* PigeonAppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonAppDelegate.swift; sourceTree = "<group>"; };
+		7101398F2515D7170029B1D5 /* PigeonEventEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PigeonEventEmitter.swift; sourceTree = "<group>"; };
 		B3E7B5891CC2AC0600A0062D /* Pigeon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Pigeon.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -60,6 +64,8 @@
 		58B511D21A9E6C8500147676 = {
 			isa = PBXGroup;
 			children = (
+				7101398F2515D7170029B1D5 /* PigeonEventEmitter.swift */,
+				7101398D251523050029B1D5 /* PigeonAppDelegate.swift */,
 				710139882514DBAD0029B1D5 /* PigeonData.swift */,
 				710139862514DB810029B1D5 /* Constants.swift */,
 				710139842514D9400029B1D5 /* PigeonClient.swift */,
@@ -130,8 +136,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				710139872514DB810029B1D5 /* Constants.swift in Sources */,
+				710139902515D7170029B1D5 /* PigeonEventEmitter.swift in Sources */,
 				B3E7B58A1CC2AC0600A0062D /* Pigeon.m in Sources */,
 				710139812514D8310029B1D5 /* Pigeon.swift in Sources */,
+				7101398E251523050029B1D5 /* PigeonAppDelegate.swift in Sources */,
 				710139852514D9400029B1D5 /* PigeonClient.swift in Sources */,
 				710139832514D90C0029B1D5 /* PigeonLog.swift in Sources */,
 				710139892514DBAD0029B1D5 /* PigeonData.swift in Sources */,
