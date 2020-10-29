@@ -1,5 +1,6 @@
 package io.pigeonapp;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import com.facebook.react.bridge.Arguments;
@@ -10,32 +11,26 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.Gson;
 
+import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.Arrays;
-
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import java.util.UUID;
 
 public class PigeonClient {
     private static String TAG = PigeonClient.class.getSimpleName();
-    private final String PIGEON_FILTER_KEY = "pigeon_pn_type";
 
     private static PigeonClient instance = null;
 
-    private String baseURI = "https://api.pigeonapp.io/v1";
+    private String baseURI = "http://192.168.1.6:8080/v1";
     private String publicKey;
     private String customerToken;
     private String deviceToken;
     private ReactApplicationContext reactApplicationContext;
+    private String anonymousUid;
 
     private OkHttpClient httpClient = new OkHttpClient();
 
@@ -83,8 +78,22 @@ public class PigeonClient {
         return reactApplicationContext;
     }
 
+    public void generateAnonymousUid() {
+        SharedPreferences pigeonSharedPreferences = Utils.getPigeonSharedPreferences(reactApplicationContext.getApplicationContext());
+        String anonymousUid = pigeonSharedPreferences.getString(Constants.SHARED_PREFERENCES_KEY_ANONYMOUS_UID, null);
+
+        if(anonymousUid != null) {
+            this.anonymousUid = anonymousUid;
+        } else {
+            this.anonymousUid = UUID.randomUUID().toString();
+            pigeonSharedPreferences.edit()
+                .putString(Constants.SHARED_PREFERENCES_KEY_ANONYMOUS_UID, this.anonymousUid)
+                .apply();
+        }
+    }
+
     public Boolean canHandleMessage(RemoteMessage remoteMessage) {
-        return remoteMessage.getData().containsKey(PIGEON_FILTER_KEY);
+        return remoteMessage.getData().containsKey(Constants.MESSAGE_FILTER_KEY);
     }
 
     public void handleMessage(RemoteMessage remoteMessage) {
@@ -98,7 +107,7 @@ public class PigeonClient {
         PigeonLog.d(TAG, "Data: " + remoteMessage.getData());
 
         try {
-            eventProperties.putMap("data", DataUtils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(PIGEON_FILTER_KEY)));
+            eventProperties.putMap("data", Utils.convertToWritableMap(remoteMessage.getData(), Arrays.asList(Constants.MESSAGE_FILTER_KEY)));
         } catch (Exception e) {
             PigeonLog.d(TAG, "Encountered an error while parsing notification data");
             e.printStackTrace();
@@ -122,15 +131,11 @@ public class PigeonClient {
     }
 
     public void track(final String event, final ReadableMap data) {
-        if (customerToken == null) {
-            PigeonLog.d(TAG, "Customer token not set");
-            return;
-        }
-
         TrackRequest trackRequest;
+        Headers.Builder headerBuilder;
 
         try {
-            trackRequest = new TrackRequest(event, DataUtils.convertMapToJson(data));
+            trackRequest = new TrackRequest(event, Utils.convertMapToJson(data));
         } catch (JSONException e) {
             PigeonLog.d(TAG, "Encountered an error while parsing data");
             e.printStackTrace();
@@ -139,9 +144,15 @@ public class PigeonClient {
 
         RequestBody body = RequestBody.create(gson.toJson(trackRequest), JSON);
 
+        if(customerToken == null) {
+            headerBuilder = new Headers.Builder().add("X-Anonymous-UID", anonymousUid);
+        } else {
+            headerBuilder = new Headers.Builder().add("X-Customer-Token", customerToken);
+        }
+
         Request request = new Request.Builder()
                 .url(baseURI + "/event_logs")
-                .addHeader("X-Customer-Token", customerToken)
+                .headers(headerBuilder.build())
                 .addHeader("X-Public-Key", publicKey)
                 .post(body)
                 .build();
@@ -184,6 +195,7 @@ public class PigeonClient {
         Request request = new Request.Builder()
                 .url(baseURI + "/contacts")
                 .addHeader("X-Public-Key", publicKey)
+                .addHeader("X-Anonymous-UID", anonymousUid)
                 .addHeader("X-Customer-Token", customerToken)
                 .post(body)
                 .build();
