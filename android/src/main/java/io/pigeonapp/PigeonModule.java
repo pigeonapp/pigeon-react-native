@@ -24,6 +24,7 @@ public class PigeonModule extends ReactContextBaseJavaModule {
         this.reactContext = reactContext;
         this.pigeonClient = PigeonClient.getInstance();
         this.pigeonClient.setReactApplicationContext(reactContext);
+        this.pigeonClient.generateAnonymousUid();
     }
 
     @Override
@@ -38,8 +39,20 @@ public class PigeonModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setup(ReadableMap config) {
-        String publicKey = config.getString("publicKey");
+        String publicKey = config.getString(Constants.CONFIG_PUBLIC_KEY);
         pigeonClient.setPublicKey(publicKey);
+
+        if (config.getBoolean(Constants.CONFIG_TRACK_APP_LIFECYCLE_EVENTS)) {
+            PigeonActivityLifecycleCallbacks.Companion.enablePigeonActivityLifecycleCallbacks(this.reactContext.getApplicationContext());
+        }
+
+        if (config.getBoolean(Constants.CONFIG_TRACK_APP_EXCEPTIONS)) {
+            PigeonExceptionHandler.Companion.enablePigeonExceptionHandler();
+        }
+
+        if (config.getBoolean(Constants.CONFIG_RECORD_SCREEN_VIEWS)) {
+            PigeonActivityLifecycleCallbacks.Companion.enableRecordScreenViews();
+        }
 
         FirebaseInstanceId.getInstance().getInstanceId()
             .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
